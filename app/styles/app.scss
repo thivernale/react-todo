@@ -1,0 +1,13 @@
+/**
+ * Root file of styles
+ * Imports to other files (partials) without the underscore and file extension
+ */
+
+@import "base/variables";
+
+// Foundation
+@import "base/foundation-settings";
+@import "foundation";
+@include foundation-everything;
+
+// Components
