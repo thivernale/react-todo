@@ -40,6 +40,11 @@ module.exports = {
     resolve: {
         // root folder to resolve paths of required components
         root: __dirname,
+        // specify folders for webpack to look at (overwrite default) so we don't have to specify alias for every file in 'alias' setting
+        modulesDirectories: [
+            'node_modules',
+            './app/components'
+        ],
         // tell webpack where to find our components, so we can require them just by name from any other file
         alias: {
             applicationStyles: 'app/styles/app.scss'
