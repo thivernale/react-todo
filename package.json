@@ -1,7 +1,7 @@
 {
   "name": "boilerplate",
   "version": "1.0.0",
-  "description": "Boilerplate React app",
+  "description": "React Todo app",
   "main": "index.js",
   "scripts": {
     "test": "karma start",
@@ -12,7 +12,7 @@
     "app",
     "reactjs"
   ],
-  "author": "Tristesse Hivernale",
+  "author": "T Hivernale",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.17.1",
