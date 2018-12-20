@@ -11,7 +11,7 @@ var TodoList = React.createClass({
                 // add key prop when returning an array of components so React
                 // keeps track internally of individual components
                 return (
-                    <Todo key={todo.id} {...todo} />
+                    <Todo key={todo.id} {...todo} onToggle={this.props.onToggle} />
                 );
             });
         };
