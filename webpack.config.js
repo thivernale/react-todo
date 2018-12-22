@@ -43,7 +43,8 @@ module.exports = {
         // specify folders for webpack to look at (overwrite default) so we don't have to specify alias for every file in 'alias' setting
         modulesDirectories: [
             'node_modules',
-            './app/components'
+            './app/components',
+            './app/api'
         ],
         // tell webpack where to find our components, so we can require them just by name from any other file
         alias: {
