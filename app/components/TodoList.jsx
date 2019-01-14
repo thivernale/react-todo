@@ -6,6 +6,11 @@ var TodoList = React.createClass({
         var { todos } = this.props;
         // define a custom renderer function for a rendering Todos
         var renderTodos = () => {
+            if (todos.length === 0) {
+                return (
+                    <p className="container__message">Nothing To Do</p>
+                );
+            }
             // iterate over the array and return an array of JSX
             return todos.map((todo) => {
                 // add key prop when returning an array of components so React
