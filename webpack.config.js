@@ -48,7 +48,8 @@ module.exports = {
         ],
         // tell webpack where to find our components, so we can require them just by name from any other file
         alias: {
-            applicationStyles: 'app/styles/app.scss'
+            applicationStyles: 'app/styles/app.scss',
+            actions: 'app/actions/actions.jsx'
         },
         // file extensions that we want to process
         extensions: ['', '.js', '.jsx']
