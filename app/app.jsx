@@ -4,6 +4,19 @@ var { Route, Router, IndexRoute, hashHistory } = require('react-router');
 
 var TodoApp = require('TodoApp');
 
+var actions = require('actions');
+var store = require('configureStore').configure();
+
+// listen to changes on the store
+store.subscribe(() => {
+    console.log('New state', store.getState());
+});
+
+//dispatch action
+store.dispatch(actions.addTodo('Clean the yard'));
+store.dispatch(actions.setSearchText('yard'));
+store.dispatch(actions.toggleShowCompleted());
+
 // Load foundation
 $(document).foundation();
 
