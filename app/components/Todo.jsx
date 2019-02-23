@@ -1,9 +1,12 @@
 var React = require('react');
+var { connect } = require('react-redux');
 var moment = require('moment');
 
-var Todo = React.createClass({
+var actions = require('actions');
+
+export var Todo = React.createClass({
     render: function() {
-        var { text, id, completed, createdAt, completedAt } = this.props;
+        var { text, id, completed, createdAt, completedAt, dispatch } = this.props;
         var todoClassName = completed ? 'todo todo-completed' : 'todo';
         var renderDate = () => {
             var message = completed ? 'Completed at ' : 'Created at ';
@@ -18,7 +21,9 @@ var Todo = React.createClass({
 
                 // function is passed directly using and anonymous function
                 // instead of defining a new method on the class
-                this.props.onToggle(id);
+                //this.props.onToggle(id);
+
+                dispatch(actions.toggleTodo(id));
             }}>
                 <div>
                     <input type="checkbox" ref="completed" checked={completed} />
@@ -32,4 +37,7 @@ var Todo = React.createClass({
     }
 });
 
-module.exports = Todo;
+// connect to the store to get access to dispatch (in props), we don't need the data here
+export default connect()(Todo);
+
+//module.exports = Todo;

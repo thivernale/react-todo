@@ -34,15 +34,16 @@ export var todosReducer = (state = [], action) => {
             ];
         case 'TOGGLE_TODO':
             return state.map((a) => {
-                var newCompleted = !a.completed;
-
                 if (a.id == action.id) {
+                    var newCompleted = !a.completed;
                     // !!! return a new object
                     return {
                         ...a,
                         completed: newCompleted,
                         completedAt: newCompleted ? moment().unix() : undefined
                     };
+                } else {
+                    return a;
                 }
             });
         default:
