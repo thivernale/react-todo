@@ -1,10 +1,11 @@
 var React = require('react');
 var { connect } = require('react-redux');
 import Todo from 'Todo';
+var TodoAPI = require('TodoAPI');
 
 export var TodoList = React.createClass({
     render: function() {
-        var { todos } = this.props;
+        var { todos, showCompleted, searchText } = this.props;
         // define a custom renderer function for a rendering Todos
         var renderTodos = () => {
             if (todos.length === 0) {
@@ -13,7 +14,7 @@ export var TodoList = React.createClass({
                 );
             }
             // iterate over the array and return an array of JSX
-            return todos.map((todo) => {
+            return TodoAPI.filterTodos(todos, showCompleted, searchText).map((todo) => {
                 // add key prop when returning an array of components so React
                 // keeps track internally of individual components
                 return (
@@ -34,10 +35,9 @@ export var TodoList = React.createClass({
 export default connect(
     // specify which parts of the state we need for this component
     // they will be set to its props property
+    // now we want all three props => the whole state
     (state) => {
-        return {
-            todos: state.todos
-        };
+        return state;
     }
 )(TodoList);
 

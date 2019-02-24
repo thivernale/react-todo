@@ -13,10 +13,12 @@ store.subscribe(() => {
     console.log('New state', store.getState());
 });
 
-//dispatch action
+/*
+//dispatch actions to set sample defaults
 store.dispatch(actions.addTodo('Clean the yard'));
 store.dispatch(actions.setSearchText('yard'));
 store.dispatch(actions.toggleShowCompleted());
+*/
 
 // Load foundation
 $(document).foundation();
