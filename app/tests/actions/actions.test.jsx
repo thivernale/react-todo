@@ -31,6 +31,22 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
+    it('should generate add todos action object', () => {
+        var action = {
+            type: 'ADD_TODOS',
+            todos: [{
+                id: 111,
+                text: 'any',
+                completed: false,
+                completedAt: undefined,
+                createdAt: 33000
+            }]
+        }
+        var res = actions.addTodos(action.todos);
+
+        expect(res).toEqual(action);
+    });
+
     it('should generate toggle todo action', () => {
         var action = {
             type: 'TOGGLE_TODO',

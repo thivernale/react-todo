@@ -7,11 +7,19 @@ var TodoApp = require('TodoApp');
 
 var actions = require('actions');
 var store = require('configureStore').configure();
+var TodoAPI = require('TodoAPI');
 
 // listen to changes on the store
 store.subscribe(() => {
-    console.log('New state', store.getState());
+    var state = store.getState();
+    console.log('New state', state);
+    // set state from store into local storage
+    TodoAPI.setTodos(state.todos);
 });
+
+var initialTodos = TodoAPI.getTodos();
+// initialize app with any todos from local storage
+store.dispatch(actions.addTodos(initialTodos));
 
 /*
 //dispatch actions to set sample defaults
