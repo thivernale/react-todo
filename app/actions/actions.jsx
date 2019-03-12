@@ -22,6 +22,7 @@ export var addTodo = (todo) => {
 };
 
 // asynchronous action that returns a function
+// return a function, using thunk
 export var startAddTodo = (text) => {
     return (dispatch, getState) => {
         var todo = {
@@ -50,9 +51,26 @@ export var addTodos = (todos) => {
     };
 };
 
-export var toggleTodo = (id) => {
+export var updateTodo = (id, updates) => {
     return {
-        type: 'TOGGLE_TODO',
-        id
+        type: 'UPDATE_TODO',
+        id,
+        updates
+    };
+};
+
+export var startToggleTodo = (id, completed) => {
+    return (dispatch, getState) => {
+        // get reference to the todo specifying path
+        var todoRef = firebaseRef.child(`todos/${id}`);
+        var updates = {
+            completed,
+            completedAt: completed ? moment().unix() : null
+        };
+        // update data on firebase
+        return todoRef.update(updates).then(() => {
+            // dispatch the synchronous action in the success handler
+            dispatch(updateTodo(id, updates));
+        });
     };
 };

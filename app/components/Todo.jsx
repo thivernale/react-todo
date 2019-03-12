@@ -23,7 +23,8 @@ export var Todo = React.createClass({
                 // instead of defining a new method on the class
                 //this.props.onToggle(id);
 
-                dispatch(actions.toggleTodo(id));
+                //dispatch(actions.toggleTodo(id));
+                dispatch(actions.startToggleTodo(id, !completed));
             }}>
                 <div>
                     <input type="checkbox" ref="completed" checked={completed} onchange={() => { }} />
