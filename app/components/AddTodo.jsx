@@ -12,7 +12,9 @@ export var AddTodo = React.createClass({
 
             // prop no longer gets passed, instead we want to call dispatch dispatching an action
             //this.props.onAddTodo(todoText);
-            dispatch(actions.addTodo(todoText));
+            //dispatch(actions.addTodo(todoText));
+            // call the new action method for saving data in firebase
+            dispatch(actions.startAddTodo(todoText));
         } else {
             this.refs.todoText.focus();
         }

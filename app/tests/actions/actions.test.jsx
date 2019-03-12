@@ -1,5 +1,11 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 var expect = require('expect');
+
 var actions = require('actions');
+
+// mock store generator
+var createMockStore = configureMockStore([thunk]);
 
 describe('Actions', () => {
     it('should generate search text action', () => {
@@ -24,11 +30,39 @@ describe('Actions', () => {
     it('should generate add todo action', () => {
         var action = {
             type: 'ADD_TODO',
-            text: 'thing to do'
+            todo: {
+                id: 'abc123',
+                text: 'Walk the dog',
+                completed: false,
+                createdAt: 333
+            }
         };
-        var res = actions.addTodo(action.text);
+        var res = actions.addTodo(action.todo);
 
         expect(res).toEqual(action);
+    });
+
+    // provide done argument to specify that test is asynchronous
+    // and mocha should not stop listening for errors and assertions until done gets called
+    it('should create todo and dispatch ADD_TODO', (done) => {
+        // create an instance of the mock store
+        const store = createMockStore({});
+        const todoText = 'New todo item';
+
+        store.dispatch(actions.startAddTodo(todoText)).then(() => {
+            // get all the actions that were fired on the mock store
+            const actions = store.getActions();
+
+            // assertion for an object - test for a property match
+            expect(actions[0]).toInclude({
+                type: 'ADD_TODO'
+            });
+            expect(actions[0].todo).toInclude({
+                text: todoText
+            });
+            // call done to end test successfully
+            done();
+        }).catch(done);
     });
 
     it('should generate add todos action object', () => {
