@@ -1,12 +1,19 @@
 // require webpack
 var webpack = require('webpack');
 var path = require('path');
+var envFile = require('node-env-file');
 
 // fetch environment variables available on node
 // we can define variable on command line and run weback with it like this:
 // add -p flag for optimization
 // > NODE_ENV=production webpack -p
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+try {
+    envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'));
+} catch (e) {
+
+}
 
 /**
  * configuration file for running webpack for project with
@@ -38,6 +45,17 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 warnings: false
+            }
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                API_KEY: JSON.stringify(process.env.API_KEY),
+                AUTH_DOMAIN: JSON.stringify(process.env.NODE_ENV),
+                DATABASE_URL: JSON.stringify(process.env.DATABASE_URL),
+                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID),
+                STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET),
+                MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID)
             }
         })
     ],

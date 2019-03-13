@@ -10,7 +10,6 @@ var store = require('configureStore').configure();
 var TodoAPI = require('TodoAPI');
 
 //import './../playground/firebase/index';
-import 'app/config/';
 
 // listen to changes on the store
 /*store.subscribe(() => {

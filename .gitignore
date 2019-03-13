@@ -3,4 +3,4 @@
 /.settings/
 /README
 public/bundle.js
-app/config/index.js
+config/

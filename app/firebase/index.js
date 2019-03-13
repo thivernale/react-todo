@@ -2,12 +2,12 @@ import firebase from 'firebase';
 
 try {
     var config = {
-            apiKey: process.env.FIREBASE_API_KEY || '',
-            authDomain: "thivernale-todo-app.firebaseapp.com",
-            databaseURL: "https://thivernale-todo-app.firebaseio.com",
-            projectId: "thivernale-todo-app",
-            storageBucket: "thivernale-todo-app.appspot.com",
-            messagingSenderId: "978186728580"
+        apiKey: process.env.API_KEY,
+        authDomain: process.env.AUTH_DOMAIN,
+        databaseURL: process.env.DATABASE_URL,
+        projectId: process.env.PROJECT_ID,
+        storageBucket: process.env.STORAGE_BUCKET,
+        messagingSenderId: process.env.MESSAGING_SENDER_ID
     };
     firebase.initializeApp(config);
 } catch (e) {
