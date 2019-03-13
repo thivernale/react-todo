@@ -100,14 +100,21 @@ describe('Actions', () => {
         // define code to run before every single test
         // use this code to set up test suite by adding data to Firebase
         beforeEach((done) => {
-            // generate reference to a new item
-            testTodoRef = firebaseRef.child('todos').push();
-            // store data
-            testTodoRef.set({
-                text: 'Something to do',
-                completed: false,
-                completedAt: 5566
-            }).then(() => done());
+            var todosRef = firebaseRef.child('todos');
+
+            todosRef.remove().then(() => {
+                // generate reference to a new item
+                testTodoRef = firebaseRef.child('todos').push();
+                // store data
+                return testTodoRef.set({
+                    text: 'Something to do',
+                    completed: false,
+                    completedAt: 5566
+                });
+            })
+                .then(() => done())
+                .catch(done);
+
         });
         // define code to run after every single test
         // use this code to delete added data
@@ -132,6 +139,25 @@ describe('Actions', () => {
                     completed: true
                 });
                 expect(mockActions[0].updates.completedAt).toExist();
+
+                done();
+            }, done);
+        });
+
+        it('should populate todos and dispatch ADD_TODOS action', (done) => {
+            const store = createMockStore({});
+            const action = actions.startAddTodos();
+
+            store.dispatch(action).then(() => {
+                const mockActions = store.getActions();
+
+                expect(mockActions[0]).toInclude({
+                    type: 'ADD_TODOS'
+                });
+                expect(mockActions[0].todos).toExist();
+                expect(mockActions[0].todos.length).toEqual(1);
+                expect(mockActions[0].todos[0].text).toEqual('Something to do');
+
                 done();
             }, done);
         });
