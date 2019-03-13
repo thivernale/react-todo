@@ -2,6 +2,12 @@
 var webpack = require('webpack');
 var path = require('path');
 
+// fetch environment variables available on node
+// we can define variable on command line and run weback with it like this:
+// add -p flag for optimization
+// > NODE_ENV=production webpack -p
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 /**
  * configuration file for running webpack for project with
  * cannot be done just from command line because JSX (Babel, React) and ES6 functionality is used in project
@@ -28,6 +34,11 @@ module.exports = {
         new webpack.ProvidePlugin({
             '$': 'jquery',
             'jQuery': 'jquery'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
         })
     ],
     // output:
@@ -83,5 +94,5 @@ module.exports = {
     },
     // enables creation of source maps that the browser understands
     // this way we can debug the files we wrote but still run the transformed files
-    devtool: 'cheap-module-eval-source-map'
+    devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'
 };
