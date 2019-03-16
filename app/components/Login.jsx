@@ -1,0 +1,31 @@
+import React from 'react';
+import * as Redux from 'react-redux';
+
+import * as actions from 'actions';
+var { Link } = require('react-router');
+
+export var Login = React.createClass({
+    onLogin() {
+        var { dispatch } = this.props;
+        dispatch(actions.startLogin());
+    },
+    render() {
+        return (
+            <div className="grid-container">
+                <h1 className="page-title">Todo App</h1>
+                <div className="grid-x">
+                    <div className="cell small-centered small-12 medium-6 medium-offset-3 large-4 large-offset-4">
+                        <div className="callout callout-auth">
+                            <h3>Login</h3>
+                            <p>Login with GitHub account below</p>
+                            <button className="button" onClick={this.onLogin}>Login with GitHub</button>
+                        </div>
+                    </div>
+                </div>
+                <Link to="/todos">TODOS</Link>
+            </div>
+        );
+    }
+});
+
+export default Redux.connect()(Login);
