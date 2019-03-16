@@ -2,7 +2,6 @@ import React from 'react';
 import * as Redux from 'react-redux';
 
 import * as actions from 'actions';
-var { Link } = require('react-router');
 
 export var Login = React.createClass({
     onLogin() {
@@ -22,7 +21,6 @@ export var Login = React.createClass({
                         </div>
                     </div>
                 </div>
-                <Link to="/todos">TODOS</Link>
             </div>
         );
     }
