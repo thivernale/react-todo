@@ -12,8 +12,10 @@ import router from 'app/router/';
 firebase.auth().onAuthStateChanged((user) => {
     // redirect after login or logout
     if (user) {
+        store.dispatch(actions.login(user.uid));
         hashHistory.push('/todos');
     } else {
+        store.dispatch(actions.logout());
         hashHistory.push('/');
     }
 });

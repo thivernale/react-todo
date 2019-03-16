@@ -94,6 +94,13 @@ export var startToggleTodo = (id, completed) => {
     };
 };
 
+export var login = (uid) => {
+    return {
+        type: 'LOGIN',
+        uid
+    }
+};
+
 export var startLogin = () => {
     return (dispatch, getState) => {
         // auth is a function which returns multiple authentication-related functions
@@ -102,6 +109,12 @@ export var startLogin = () => {
         }, (error) => {
             console.log('Unable to authenticate', error);
         });
+    };
+};
+
+export var logout = () => {
+    return {
+        type: 'LOGOUT'
     };
 };
 

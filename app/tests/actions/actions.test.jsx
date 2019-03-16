@@ -162,4 +162,23 @@ describe('Actions', () => {
             }, done);
         });
     });
+
+    describe('Auth actions', () => {
+        it('should generate login action', () => {
+            var action = {
+                type: 'LOGIN',
+                uid: 333
+            };
+            var res = actions.login(action.uid);
+            expect(res).toEqual(action);
+        });
+
+        it('should generate logout action', () => {
+            var action = {
+                type: 'LOGOUT'
+            };
+            var res = actions.logout();
+            expect(res).toEqual(action);
+        });
+    });
 });
