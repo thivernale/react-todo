@@ -13,6 +13,9 @@ firebase.auth().onAuthStateChanged((user) => {
     // redirect after login or logout
     if (user) {
         store.dispatch(actions.login(user.uid));
+        // fetch all the data available on firebase and pass it to the store
+        // just the todos of current user after their id is pushed to the state
+        store.dispatch(actions.startAddTodos());
         hashHistory.push('/todos');
     } else {
         store.dispatch(actions.logout());
@@ -42,8 +45,6 @@ store.dispatch(actions.setSearchText('yard'));
 store.dispatch(actions.toggleShowCompleted());
 */
 
-// fetch all the data available on firebase and pass it to the store
-store.dispatch(actions.startAddTodos());
 
 // Load foundation
 $(document).foundation();
