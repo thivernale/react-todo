@@ -43,29 +43,6 @@ describe('Actions', () => {
         expect(res).toEqual(action);
     });
 
-    // provide done argument to specify that test is asynchronous
-    // and mocha should not stop listening for errors and assertions until done gets called
-    it('should create todo and dispatch ADD_TODO', (done) => {
-        // create an instance of the mock store
-        const store = createMockStore({});
-        const todoText = 'New todo item';
-
-        store.dispatch(actions.startAddTodo(todoText)).then(() => {
-            // get all the actions that were fired on the mock store
-            const actions = store.getActions();
-
-            // assertion for an object - test for a property match
-            expect(actions[0]).toInclude({
-                type: 'ADD_TODO'
-            });
-            expect(actions[0].todo).toInclude({
-                text: todoText
-            });
-            // call done to end test successfully
-            done();
-        }).catch(done);
-    });
-
     it('should generate add todos action object', () => {
         var action = {
             type: 'ADD_TODOS',
@@ -95,16 +72,23 @@ describe('Actions', () => {
 
     describe('Tests with Firebase todos', () => {
         var testTodoRef;
+        var uid;
+        var todosRef;
 
         // lifecycle method in mocha 
         // define code to run before every single test
         // use this code to set up test suite by adding data to Firebase
         beforeEach((done) => {
-            var todosRef = firebaseRef.child('todos');
+            var credential = firebase.auth.GithubAuthProvider.credential(process.env.GITHUB_ACCESS_TOKEN);
 
-            todosRef.remove().then(() => {
+            firebase.auth().signInWithCredential(credential).then((user) => {
+                uid = user.uid;
+                todosRef = firebaseRef.child(`users/${uid}/todos`);
+                // the returned value is used for chaining to the next promise
+                return todosRef.remove();
+            }).then(() => {
                 // generate reference to a new item
-                testTodoRef = firebaseRef.child('todos').push();
+                testTodoRef = todosRef.push();
                 // store data
                 return testTodoRef.set({
                     text: 'Something to do',
@@ -120,12 +104,35 @@ describe('Actions', () => {
         // use this code to delete added data
         afterEach((done) => {
             // remove todo item created above
-            testTodoRef.remove().then(() => done());
+            todosRef.remove().then(() => done());
+        });
+
+        // provide done argument to specify that test is asynchronous
+        // and mocha should not stop listening for errors and assertions until done gets called
+        it('should create todo and dispatch ADD_TODO', (done) => {
+            // create an instance of the mock store
+            const store = createMockStore({ auth: { uid } });
+            const todoText = 'New todo item';
+
+            store.dispatch(actions.startAddTodo(todoText)).then(() => {
+                // get all the actions that were fired on the mock store
+                const actions = store.getActions();
+
+                // assertion for an object - test for a property match
+                expect(actions[0]).toInclude({
+                    type: 'ADD_TODO'
+                });
+                expect(actions[0].todo).toInclude({
+                    text: todoText
+                });
+                // call done to end test successfully
+                done();
+            }).catch(done);
         });
 
         // asynchronous test
         it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
-            const store = createMockStore({});
+            const store = createMockStore({ auth: { uid } });
             const action = actions.startToggleTodo(testTodoRef.key, true);
 
             store.dispatch(action).then(() => {
@@ -145,7 +152,7 @@ describe('Actions', () => {
         });
 
         it('should populate todos and dispatch ADD_TODOS action', (done) => {
-            const store = createMockStore({});
+            const store = createMockStore({ auth: { uid } });
             const action = actions.startAddTodos();
 
             store.dispatch(action).then(() => {
