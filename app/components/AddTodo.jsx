@@ -1,36 +1,31 @@
-var React = require('react');
-var { connect } = require('react-redux');
-var actions = require('actions');
+import React from 'react';
+import { connect } from 'react-redux';
 
-export var AddTodo = React.createClass({
-    handleSubmit: function(e) {
+import * as actions from 'actions';
+
+export class AddTodo extends React.Component {
+    handleSubmit(e) {
         e.preventDefault();
         var { dispatch } = this.props;
         var todoText = this.refs.todoText.value;
         if (todoText !== '') {
             this.refs.todoText.value = '';
 
-            // prop no longer gets passed, instead we want to call dispatch dispatching an action
-            //this.props.onAddTodo(todoText);
-            //dispatch(actions.addTodo(todoText));
-            // call the new action method for saving data in firebase
             dispatch(actions.startAddTodo(todoText));
         } else {
             this.refs.todoText.focus();
         }
-    },
-    render: function() {
+    }
+    render() {
         return (
             <div className="container__footer">
-                <form ref="add_form" onSubmit={this.handleSubmit}>
+                <form ref="add_form" onSubmit={this.handleSubmit.bind(this)}>
                     <input type="text" ref="todoText" placeholder="What do you need to do?" />
                     <button className="button expanded">Add Todo</button>
                 </form>
             </div>
         );
     }
-});
+};
 
 export default connect()(AddTodo);
-
-//module.exports = AddTodo;
