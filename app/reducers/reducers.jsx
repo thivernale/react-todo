@@ -37,6 +37,28 @@ export var todosReducer = (state = [], action) => {
                     return a;
                 }
             });
+        case 'TOGGLE_EDIT':
+            return state.map((a) => {
+                if (a.id === action.id) {
+                    return {
+                        ...a,
+                        edit: action.edit
+                    };
+                } else {
+                    return a;
+                }
+            });
+        case 'SET_EDIT_TEXT':
+            return state.map((a) => {
+                if (a.id === action.id) {
+                    return {
+                        ...a,
+                        text: action.text
+                    };
+                } else {
+                    return a;
+                }
+            });
         case 'ADD_TODOS':
             return [
                 ...state,

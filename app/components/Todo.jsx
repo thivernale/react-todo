@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import * as actions from 'actions';
+import EditTodo from 'EditTodo';
 
 export class Todo extends React.Component {
     render() {
@@ -14,18 +15,34 @@ export class Todo extends React.Component {
 
             return message + moment.unix(timestamp).format('MMM Do YYYY @ h:mm a');
         };
+        var renderText = () => {
+            if (!this.props.edit) {
+                return (
+                    <div className="cell small-10">
+                        <p ref="viewText" onClick={() => {
+                            var { id, dispatch } = this.props;
+                            dispatch(actions.toggleEdit(id, true));
+                        }}>{text}</p>
+                        <p className="todo__subtext">{renderDate()}</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="cell small-10">
+                        <EditTodo key={'edit' + this.props.id} id={this.props.id} text={this.props.text} />
+                    </div>
+                );
+            }
+        }
         return (
-            <div className={todoClassName} onClick={() => {
-                dispatch(actions.startToggleTodo(id, !completed));
-            }}>
-                <div>
-                    <input type="checkbox" ref="completed" checked={completed} onChange={() => { }} />
+            <div className={todoClassName + ' grid-x'}>
+                <div className="cell small-1">
+                    <input type="checkbox" ref="completed" checked={completed} onChange={() => {
+                        dispatch(actions.startToggleTodo(id, !completed));
+                    }} />
                 </div>
-                <div>
-                    <p>{text}</p>
-                    <p className="todo__subtext">{renderDate()}</p>
-                </div>
-            </div>
+                {renderText()}
+            </div >
         );
     }
 };

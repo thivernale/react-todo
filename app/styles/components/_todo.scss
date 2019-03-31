@@ -5,10 +5,10 @@
     padding: 1rem;
     transition: background .3s ease;
 
-    p, input {
+    p, input[type="checkbox"] {
         margin: 0;
     }
-    
+
     > :first-child {
         margin-right: 1rem;
     }

@@ -45,6 +45,40 @@ export var startAddTodo = (text) => {
     };
 };
 
+export var toggleEdit = (id, edit) => {
+    return {
+        type: 'TOGGLE_EDIT',
+        id,
+        edit
+    };
+};
+
+export var startEditTodo = (id, text) => {
+    return (dispatch, getState) => {
+        // get reference to the todo specifying path
+        var uid = getState().auth.uid;
+        var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+        var updates = {
+            text
+        };
+        // update data on firebase
+        return todoRef.update(updates).then(() => {
+            // dispatch the synchronous action in the success handler
+            dispatch(updateTodo(id, updates));
+            // toggle edit mode off
+            dispatch(toggleEdit(id, false));
+        });
+    };
+};
+
+export var setEditText = (id, text) => {
+    return {
+        type: 'SET_EDIT_TEXT',
+        id,
+        text
+    };
+};
+
 export var addTodos = (todos) => {
     return {
         type: 'ADD_TODOS',
