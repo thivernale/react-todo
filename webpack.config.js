@@ -63,9 +63,9 @@ module.exports = {
     // output:
     output: {
         // in nodejs this gives us the path to the current folder
-        path: __dirname,
+        path: __dirname + '/public',
         // the bundle file is in the "public" folder because it is served to the browser
-        filename: './public/bundle.js'
+        filename: './bundle.js'
     },
     resolve: {
         // root folder to resolve paths of required components
@@ -103,8 +103,66 @@ module.exports = {
                 test: /\.jsx?$/,
                 // which folders should not be parsed
                 exclude: /(node_module|bower_components)/
+            },
+            //{ test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+            {
+                test: /\.woff(2)?/,
+                loader: "url-loader"
+            },
+            {
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "file-loader"
             }
-        ]
+        ]/*,
+        rules: [
+            {
+                test: /\.jsx?$/,
+                exclude: /(node_module|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['react', 'es2015', 'stage-0']
+                    }
+                }
+            },
+            {
+                test: /\.s?css$/,
+                loaders: ["style", "css?sourceMap", "sass?sourceMap"],
+                use: [
+                    {
+                        loader: "style-loader" // creates style nodes from JS strings
+                    },
+                    {
+                        loader: "css-loader" // translates CSS into CommonJS
+                    },
+                    {
+                        loader: "sass-loader" // compiles Sass to CSS
+                    }
+                ]
+            },
+            {
+                test: /\.ttf$|\.eot$|\.svg$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: './public'
+                        }
+                    },
+                ],
+                options: {
+                    ouputPath: "./public"
+                }
+            },
+            {
+                test: /\.woff2?$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                    }
+                ]
+            }
+        ]*/
     },
     sassLoader: {
         includePaths: [

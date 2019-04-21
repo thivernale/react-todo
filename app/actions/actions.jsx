@@ -79,6 +79,29 @@ export var setEditText = (id, text) => {
     };
 };
 
+export var deleteTodo = (id) => {
+    return {
+        type: 'DELETE_TODO',
+        id
+    };
+};
+
+export var startDeleteTodo = (id) => {
+    return (dispatch, getState) => {
+        // get reference to the todo specifying path
+        var uid = getState().auth.uid;
+        var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+
+        // remove todo entry on firebase
+        return todoRef.remove().then(() => {
+            // dispatch the synchronous action in the success handler
+            dispatch(deleteTodo(id));
+        }, (e) => {
+            console.log(e);
+        });
+    };
+};
+
 export var addTodos = (todos) => {
     return {
         type: 'ADD_TODOS',

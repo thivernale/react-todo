@@ -52,6 +52,8 @@ $(document).foundation();
 // App css
 require('style!css!sass!applicationStyles');
 
+import 'style!css!sass!foundation-icon-fonts/_foundation-icons.scss';
+
 ReactDOM.render(
     <Provider store={store}>
         {router}
