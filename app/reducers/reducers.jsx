@@ -61,7 +61,7 @@ export var todosReducer = (state = [], action) => {
             });
         case 'DELETE_TODO':
             return state.filter((a) => {
-                return a.id !== action.id;
+                return action.id && a.id !== action.id;
             });
         case 'ADD_TODOS':
             return [
@@ -79,7 +79,10 @@ export var authReducer = (state = {}, action) => {
     switch (action.type) {
         case 'LOGIN':
             return {
-                uid: action.uid
+                uid: action.uid,
+                displayName: action.displayName,
+                photoURL: action.photoURL,
+                error: action.error || null
             };
         case 'LOGOUT':
             return {};

@@ -10,6 +10,7 @@ export class TodoApp extends React.Component {
     constructor(props) {
         super(props);
         this.onLogout = this.onLogout.bind(this);
+        this.onDeleteUser = this.onDeleteUser.bind(this);
     }
     onLogout(e) {
         var { dispatch } = this.props;
@@ -17,11 +18,31 @@ export class TodoApp extends React.Component {
 
         dispatch(actions.startLogout());
     }
+    onDeleteUser(e) {
+        var { dispatch } = this.props;
+        e.preventDefault();
+
+        dispatch(actions.startDeleteUser());
+    }
+    getDisplayName() {
+        var { auth } = this.props;
+        var displayName = auth.displayName || 'Anonymous';
+        return (
+            <span>
+                {displayName}
+                <img src={auth.photoURL} alt={displayName} title={displayName} className="profile-picture" />
+            </span>
+        );
+    }
     render() {
         return (
             <div className="grid-container">
                 <div className="page-actions">
-                    <a href="#" onClick={this.onLogout}>Logout</a>
+                    <ul className="breadcrumbs">
+                        <li><span>Logged in as {this.getDisplayName()}</span></li>
+                        <li><a href="#" onClick={this.onLogout}>Logout</a></li>
+                        <li><a href="#" onClick={this.onDeleteUser}>Delete account</a></li>
+                    </ul>
                 </div>
                 <h1 className="page-title">Todo App</h1>
                 <div className="grid-x">
@@ -38,4 +59,8 @@ export class TodoApp extends React.Component {
     }
 };
 
-export default Redux.connect()(TodoApp);
+export default Redux.connect(
+    (state) => {
+        return { auth: state.auth };
+    }
+)(TodoApp);

@@ -12,7 +12,11 @@ import router from 'app/router/';
 firebase.auth().onAuthStateChanged((user) => {
     // redirect after login or logout
     if (user) {
-        store.dispatch(actions.login(user.uid));
+        store.dispatch(actions.login({
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL
+        }));
         // fetch all the data available on firebase and pass it to the store
         // just the todos of current user after their id is pushed to the state
         store.dispatch(actions.startAddTodos());

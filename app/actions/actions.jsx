@@ -1,4 +1,4 @@
-import firebase, { firebaseRef, githubProvider } from 'app/firebase/';
+import firebase, { firebaseRef, githubProvider, facebookProvider, googleProvider } from 'app/firebase/';
 import moment from 'moment';
 
 export var setSearchText = (searchText) => {
@@ -91,13 +91,16 @@ export var startDeleteTodo = (id) => {
         // get reference to the todo specifying path
         var uid = getState().auth.uid;
         var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+        if (!id) {
+            todoRef = firebaseRef.child(`users/${uid}`);
+        }
 
         // remove todo entry on firebase
         return todoRef.remove().then(() => {
             // dispatch the synchronous action in the success handler
             dispatch(deleteTodo(id));
         }, (e) => {
-            console.log(e);
+            console.log('Unable to delete todo', e);
         });
     };
 };
@@ -154,20 +157,36 @@ export var startToggleTodo = (id, completed) => {
     };
 };
 
-export var login = (uid) => {
+export var login = (userData) => {
     return {
         type: 'LOGIN',
-        uid
+        ...userData
     }
 };
 
-export var startLogin = () => {
+export var startLogin = (provider) => {
+    switch (provider) {
+        case 'github':
+            provider = githubProvider;
+            break;
+        case 'facebook':
+            provider = facebookProvider;
+            break;
+        case 'google':
+            provider = googleProvider;
+            break;
+        default:
+            provider = null;
+    }
     return (dispatch, getState) => {
         // auth is a function which returns multiple authentication-related functions
-        return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+        return firebase.auth().signInWithPopup(provider).then((result) => {
             console.log('Auth worked!', result);
         }, (error) => {
             console.log('Unable to authenticate', error);
+            dispatch(login({
+                error: error.message
+            }));
         });
     };
 };
@@ -185,5 +204,26 @@ export var startLogout = () => {
         }, () => {
             //
         });
+    };
+};
+
+export var startDeleteUser = (uid) => {
+    return (dispatch, getState) => {
+        if (!firebase.auth().currentUser) {
+            return;
+        }
+
+        dispatch(startDeleteTodo('')).then((result) => {
+            firebase.auth().currentUser.delete().then((result) => {
+                console.log('Delete user worked!', result);
+            }, (error) => {
+                console.log('Unable to delete user', error);
+                dispatch(login({
+                    error: error.message
+                }));
+            });
+        }, () => {
+        });
+
     };
 };
