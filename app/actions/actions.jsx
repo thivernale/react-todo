@@ -184,6 +184,14 @@ export var startLogin = (provider) => {
             console.log('Auth worked!', result);
         }, (error) => {
             console.log('Unable to authenticate', error);
+            if (error.code == 'auth/account-exists-with-different-credential' && firebase.auth().currentUser) {
+                // link account
+                firebase.auth().currentUser.link(error.credential).then((result) => {
+                    console.log('Link worked!', result);
+                }, (error) => {
+                    console.log('Unable to link', error);
+                });
+            }
             dispatch(login({
                 error: error.message
             }));
